@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"strconv"
 
 	"github.com/BurntSushi/toml"
@@ -22,7 +23,7 @@ func init() {
 	flag.StringVar(&configPath, "config-path", "./configs/config.toml", "конфигурация")
 	// указываем даты с и по
 	flag.StringVar(&data_start, "data_start", "2020-01-01 00:00:00", "дата с (по умолчанию с 2020 года) ")
-	flag.StringVar(&data_start, "data_end", "2026-01-01 00:00:00", "дата по (по умолчанию до 2025 года)")
+	flag.StringVar(&data_end, "data_end", "2026-01-01 00:00:00", "дата по (по умолчанию до 2025 года)")
 	// указывем город
 	flag.StringVar(&city, "city", "Москва", "город(по умолчанию Москва)")
 	// указываем лимит и количество пропусков
@@ -50,7 +51,7 @@ func main() {
 	if err != nil {
 		logrus.Fatalf("%s : %s", "Can't convert limit in int", err)
 	}
-
+ 
 	// конвертация в число offset flag
 	offsetint, err := strconv.Atoi(limit)
 	if err != nil {
@@ -58,6 +59,7 @@ func main() {
 	}
 
 	// получение лидов
+	fmt.Println(data_start, data_end, city, limitint, offsetint)
 	leads, err := db.GetPromoRep().GetLead(data_start, data_end, city, limitint, offsetint)
 	if err != nil {
 		logrus.Fatalf("%s : %s", "Can't get lead from database", err)
