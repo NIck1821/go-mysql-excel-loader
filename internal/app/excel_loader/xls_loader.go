@@ -13,11 +13,11 @@ func Loader_XLS(leads []model.Lead) error {
 	// Create a new sheet.
 	index := file.NewSheet("Sheet1")
 
-	file.SetCellValue("Sheet1", "A1", "Имя")
-	file.SetCellValue("Sheet1", "B1", "Фамилия")
-	file.SetCellValue("Sheet1", "C1", "Вопрос")
-	file.SetCellValue("Sheet1", "D1", "Телефон")
-	file.SetCellValue("Sheet1", "E1", "Город")
+	file.SetCellValue("Sheet1", "A1", "fiertname")
+	file.SetCellValue("Sheet1", "B1", "lastname")
+	file.SetCellValue("Sheet1", "C1", "test")
+	file.SetCellValue("Sheet1", "D1", "phone")
+	file.SetCellValue("Sheet1", "E1", "city")
 	// Set value of a cell.
 	columns := []string{"A", "B", "C", "D", "E"}
 
