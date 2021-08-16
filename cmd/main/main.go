@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"strconv"
 
 	"github.com/BurntSushi/toml"
@@ -51,15 +50,14 @@ func main() {
 	if err != nil {
 		logrus.Fatalf("%s : %s", "Can't convert limit in int", err)
 	}
- 
+
 	// конвертация в число offset flag
-	offsetint, err := strconv.Atoi(limit)
+	offsetint, err := strconv.Atoi(offset)
 	if err != nil {
 		logrus.Fatalf("%s : %s", "Can't convert offset in int", err)
 	}
 
 	// получение лидов
-	fmt.Println(data_start, data_end, city, limitint, offsetint)
 	leads, err := db.GetPromoRep().GetLead(data_start, data_end, city, limitint, offsetint)
 	if err != nil {
 		logrus.Fatalf("%s : %s", "Can't get lead from database", err)
