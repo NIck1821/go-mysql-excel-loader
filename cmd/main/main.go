@@ -68,4 +68,5 @@ func main() {
 	if err != nil {
 		logrus.Fatalf("%s : %s", "Problem with xls file", err)
 	}
+	logrus.Info("Excel file created!")
 }
