@@ -14,14 +14,12 @@ func (rep *PromoRep) GetLead(date_start, date_end, city string, limit, offset in
 	rep.db.
 		Table("crm_lead").
 		Select("id, firstname,lastname,fabule, phone, city").
-		Where(`date BETWEEN ? and ? and city LIKE ?`, date_start, date_end, "%" + city + "%").
+		Where(`date BETWEEN ? and ? and city LIKE ? AND NOT city = ?`, date_start, date_end, "%" + city + "%", city).
 		Limit(limit).
 		Offset(offset).
 		Scan(&lead)
 	return lead, nil
 }
 
-// SELECT firstname, lastname,fabule, city, intphone
-// FROM `crm_lead`
-// WHERE date BETWEEN '2021-08-01 00:00:00' and '2021-12-28 00:00:00' and city = 'Москва'
-// LIMIT 110;
+// SELECT firstname, lastname, fabule, phone, city FROM `crm_lead` 
+// WHERE date BETWEEN '2021-08-01 00:00:00' and '2021-09-01 00:00:00' and city LIKE '%Москва%' AND NOT city = 'Москва';

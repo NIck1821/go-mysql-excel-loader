@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"strconv"
 
 	"github.com/BurntSushi/toml"
@@ -26,14 +27,16 @@ func init() {
 	// указывем город
 	flag.StringVar(&city, "city", "Москва", "город(по умолчанию Москва)")
 	// указываем лимит и количество пропусков
-	flag.StringVar(&limit, "limit", "100", "лимит заявок(по умолчанию 100)")
+	flag.StringVar(&limit, "limit", "2000", "лимит заявок(по умолчанию 1000)")
 	flag.StringVar(&offset, "offset", "0", "сколько пропустить(по умолчанию 0)")
 }
 
 func main() {
 
+	// парсинг флагов
 	flag.Parse()
 
+	// получение конфига программы
 	cfg := configs.NewConfig()
 	if _, err := toml.DecodeFile(configPath, cfg); err != nil {
 		logrus.Fatal("Config fields doesn't read: ", err)
@@ -58,15 +61,22 @@ func main() {
 	}
 
 	// получение лидов
-	leads, err := db.GetPromoRep().GetLead(data_start, data_end, city, limitint, offsetint)
+	fmt.Println(data_start, data_end, city, limitint, offsetint)
+	
+	leads, err := db.GetPromoRep().GetLead(data_start + " 00:00:00", data_end + " 00:00:00", city, limitint, offsetint)
 	if err != nil {
 		logrus.Fatalf("%s : %s", "Can't get lead from database", err)
 	}
+
+	// количество полученных лидов
+	logrus.Info("Leads count: ", len(leads))
 
 	// запись лидов в xlsx файл
 	err = xls_loader.Loader_XLS(leads)
 	if err != nil {
 		logrus.Fatalf("%s : %s", "Problem with xls file", err)
 	}
+
+	// завершение
 	logrus.Info("Excel file created!")
 }
