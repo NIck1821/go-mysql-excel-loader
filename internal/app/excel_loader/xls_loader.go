@@ -2,6 +2,7 @@ package xls_loader
 
 import (
 	"fmt"
+	"regexp"
 	"sync"
 
 	"github.com/Nick1821/go-mysql-excel-loader/internal/app/model"
@@ -15,7 +16,7 @@ func Loader_XLS(leads []model.Lead) error {
 
 	file.SetCellValue("Sheet1", "A1", "firstname")
 	file.SetCellValue("Sheet1", "B1", "lastname")
-	file.SetCellValue("Sheet1", "C1", "test")
+	file.SetCellValue("Sheet1", "C1", "text")
 	file.SetCellValue("Sheet1", "D1", "phone")
 	file.SetCellValue("Sheet1", "E1", "city")
 	// Set value of a cell.
@@ -35,7 +36,7 @@ func Loader_XLS(leads []model.Lead) error {
 				case "C":
 					row = leads[i].Text
 				case "D":
-					row = leads[i].Phone
+					row = "8" + leads[i].Phone
 				case "E":
 					row = leads[i].City
 				}
@@ -52,4 +53,9 @@ func Loader_XLS(leads []model.Lead) error {
 		return err
 	}
 	return nil
+}
+
+// обработка телефона и возврат в формате 89285577188
+func CorrectPhone(phone string) string {
+	return regexp.MustCompile(`/+/`).ReplaceAllString(phone, "")
 }

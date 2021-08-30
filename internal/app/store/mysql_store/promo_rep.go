@@ -9,17 +9,14 @@ type PromoRep struct {
 	db *gorm.DB
 }
 
-func (rep *PromoRep) GetLead(date_start, date_end, city string, limit, offset int) ([]model.Lead, error) {
+func (rep *PromoRep) GetLead(date_start, date_end, city, region string, limit, offset int) ([]model.Lead, error) {
 	var lead []model.Lead
 	rep.db.
 		Table("crm_lead").
-		Select("id, firstname,lastname,fabule, phone, city").
-		Where(`date BETWEEN ? and ? and city LIKE ? AND NOT city = ?`, date_start, date_end, "%" + city + "%", city).
+		Select("id, firstname,lastname,fabule, intphone, city").
+		Where(`date BETWEEN ? and ? and (city LIKE ? or city LIKE ?)`, date_start, date_end, "%" + city + "%", "%" + region + "%").
 		Limit(limit).
 		Offset(offset).
 		Scan(&lead)
 	return lead, nil
 }
-
-// SELECT firstname, lastname, fabule, phone, city FROM `crm_lead` 
-// WHERE date BETWEEN '2021-08-01 00:00:00' and '2021-09-01 00:00:00' and city LIKE '%Москва%' AND NOT city = 'Москва';

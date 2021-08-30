@@ -14,9 +14,9 @@ import (
 )
 
 var (
-	configPath                 string
-	data_start, data_end, city string
-	limit, offset              string
+	configPath                         string
+	data_start, data_end, city, region string
+	limit, offset                      string
 )
 
 func init() {
@@ -26,6 +26,7 @@ func init() {
 	flag.StringVar(&data_end, "data_end", "2026-01-01 00:00:00", "дата по (по умолчанию до 2025 года)")
 	// указывем город
 	flag.StringVar(&city, "city", "Москва", "город(по умолчанию Москва)")
+	flag.StringVar(&region, "region", "Московская", "регион(по умолчанию Московская)")
 	// указываем лимит и количество пропусков
 	flag.StringVar(&limit, "limit", "2000", "лимит заявок(по умолчанию 1000)")
 	flag.StringVar(&offset, "offset", "0", "сколько пропустить(по умолчанию 0)")
@@ -61,9 +62,9 @@ func main() {
 	}
 
 	// получение лидов
-	fmt.Println(data_start, data_end, city, limitint, offsetint)
-	
-	leads, err := db.GetPromoRep().GetLead(data_start + " 00:00:00", data_end + " 00:00:00", city, limitint, offsetint)
+	fmt.Println(data_start, data_end, city, region, limitint, offsetint)
+
+	leads, err := db.GetPromoRep().GetLead(data_start+" 00:00:00", data_end+" 00:00:00", city, region, limitint, offsetint)
 	if err != nil {
 		logrus.Fatalf("%s : %s", "Can't get lead from database", err)
 	}

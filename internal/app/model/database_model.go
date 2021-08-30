@@ -5,6 +5,6 @@ type Lead struct {
 	FirstName string `gorm:"column:firstname"`
 	LastName  string `gorm:"column:lastname"`
 	Text      string `gorm:"column:fabule"`
-	Phone     string `gorm:"column:phone"`
+	Phone     string `gorm:"column:intphone"`
 	City      string `gorm:"column:city"`
 }
